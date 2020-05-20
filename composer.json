@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Marcosh\\LamPHPda\\": "src/"
+      "Marcosh\\Tickets\\": "src/"
     }
   },
   "require-dev": {
