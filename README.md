@@ -23,3 +23,7 @@ check linting rules (PSR-12) using `bin/phpcs`.
 ### static analysis
 
 run `bin/psalm`
+
+### file watcher
+
+to get an immediate feedback at every file save from the above tool, run `sos`. This will use https://github.com/schell/steeloverseer (to be installed, this needs Haskell Stack)

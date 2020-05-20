@@ -1,0 +1,11 @@
+- patterns:
+  - src/(.*)\.php
+  - vendor/(.*)\.php
+  - spec/(.*)\.php
+  - psalm.xml
+  - crc-config.json
+  commands:
+  - bin/phpcs
+  - bin/psalm
+  - bin/composerRequireChecker
+  - bin/kahlan
