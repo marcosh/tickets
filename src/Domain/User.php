@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tickets\Domain;
 
-use Tickets\Domain\User\UserId;
 use Tickets\Domain\User\UserProfile;
 
 /**
@@ -14,7 +13,10 @@ use Tickets\Domain\User\UserProfile;
  */
 final class User
 {
-    /** @var UserId */
+    /**
+     * @var Id
+     * @psalm-var Id<User>
+     */
     private $userId;
 
     /**
@@ -24,12 +26,13 @@ final class User
     private $userProfile;
 
     /**
-     * @param UserId $userId
+     * @param Id $userId
+     * @psalm-param Id<User> $userId
      * @param UserProfile $userProfile
      * @psalm-param P $userProfile
      * @psalm-pure
      */
-    private function __construct(UserId $userId, UserProfile $userProfile)
+    private function __construct(Id $userId, UserProfile $userProfile)
     {
         $this->userId = $userId;
         $this->userProfile = $userProfile;
@@ -37,14 +40,15 @@ final class User
 
     /**
      * @template Q of UserProfile
-     * @param UserId $userId
+     * @param Id $userId
+     * @psalm-param Id<User> $userId
      * @param UserProfile $userProfile
      * @psalm-param Q $userProfile
      * @return User
      * @psalm-return User<Q>
      * @psalm-pure
      */
-    public static function withIdAndProfile(UserId $userId, UserProfile $userProfile): self
+    public static function withIdAndProfile(Id $userId, UserProfile $userProfile): self
     {
         return new self($userId, $userProfile);
     }

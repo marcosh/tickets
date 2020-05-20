@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Tickets\Domain\User;
+namespace Tickets\Domain;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
+ * @template A
+ *
  * @psalm-immutable
  */
-final class UserId
+final class Id
 {
     /** @var UuidInterface */
     private $uuid;
@@ -25,7 +27,7 @@ final class UserId
     }
 
     /**
-     * @return UserId
+     * @return Id
      */
     public static function generate(): self
     {
@@ -36,7 +38,7 @@ final class UserId
 
     /**
      * @param UuidInterface $uuid
-     * @return UserId
+     * @return Id
      * @psalm-pure
      */
     public static function fromUuid(UuidInterface $uuid): self
