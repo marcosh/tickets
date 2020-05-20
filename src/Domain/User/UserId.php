@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tickets\Domain\Ids;
+namespace Tickets\Domain\User;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
