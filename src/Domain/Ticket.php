@@ -31,6 +31,12 @@ final class Ticket
     private $assignedTo;
 
     /**
+     * @var Message[]
+     * @psalm-var non-empty-list<Message>
+     */
+    private $messages;
+
+    /**
      * @param Id $ticketId
      * @psalm-param Id<Ticket> $ticketId
      * @param \DateTimeImmutable $openedAt
@@ -38,6 +44,8 @@ final class Ticket
      * @param User $openedBy
      * @param Maybe $assignedTo
      * @psalm-param Maybe<User<Admin>> $assignedTo
+     * @param Message[] $messages
+     * @psalm-param non-empty-list<Message> $messages
      * @psalm-pure
      */
     private function __construct(
@@ -45,12 +53,14 @@ final class Ticket
         \DateTimeImmutable $openedAt,
         \DateTimeImmutable $lastEditedAt,
         User $openedBy,
-        Maybe $assignedTo
+        Maybe $assignedTo,
+        array $messages
     ) {
         $this->ticketId = $ticketId;
         $this->openedAt = $openedAt;
         $this->lastEditedAt = $lastEditedAt;
         $this->openedBy = $openedBy;
         $this->assignedTo = $assignedTo;
+        $this->messages = $messages;
     }
 }

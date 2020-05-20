@@ -1,6 +1,6 @@
 {
   "symbol-whitelist": [
-    "null", "bool", "self", "true", "false", "callable", "int", "string"
+    "null", "bool", "self", "true", "false", "callable", "int", "string", "array"
   ],
   "php-core-extensions" : [
     "Core",

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Tickets\Domain;
 
+/**
+ * @psalm-immutable
+ */
 final class Message
 {
     /** @var Id<User> */
