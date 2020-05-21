@@ -72,6 +72,65 @@ final class Ticket
     }
 
     /**
+     * @return Id
+     * @psalm-return Id<Ticket>
+     */
+    public function ticketId(): Id
+    {
+        return $this->ticketId;
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function openedAt(): \DateTimeImmutable
+    {
+        return $this->openedAt;
+    }
+
+    /**
+     * @return \DateTimeImmutable
+     */
+    public function lastEditedAt(): \DateTimeImmutable
+    {
+        return $this->lastEditedAt;
+    }
+
+    /**
+     * @return User
+     */
+    public function openedBy(): User
+    {
+        return $this->openedBy;
+    }
+
+    /**
+     * @return Maybe
+     * @psalm-return Maybe<User<Admin>>
+     */
+    public function assignedTo(): Maybe
+    {
+        return $this->assignedTo;
+    }
+
+    /**
+     * @return array
+     * @psalm-return non-empty-list<Message>
+     */
+    public function messages(): array
+    {
+        return $this->messages;
+    }
+
+    /**
+     * @return Status
+     */
+    public function status(): Status
+    {
+        return $this->status;
+    }
+
+    /**
      * @param Id $ticketId
      * @psalm-param Id<Ticket> $ticketId
      * @param Message $message
