@@ -2,37 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Tickets\Domain;
+namespace Tickets\Service;
 
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use Tickets\Domain\Id;
 
 /**
- * @template A
- *
  * @psalm-immutable
  */
-final class Id
+final class ConstantIdGenerator implements IdGenerator
 {
-    /** @var UuidInterface */
     private $uuid;
 
     /**
      * @param UuidInterface $uuid
      * @psalm-pure
      */
-    private function __construct(UuidInterface $uuid)
+    public function __construct(UuidInterface $uuid)
     {
         $this->uuid = $uuid;
     }
 
     /**
-     * @param UuidInterface $uuid
      * @return Id
      * @psalm-pure
      */
-    public static function fromUuid(UuidInterface $uuid): self
+    public function generateId(): Id
     {
-        return new self($uuid);
+        return Id::fromUuid($this->uuid);
     }
 }

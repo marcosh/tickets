@@ -9,15 +9,20 @@ use Tickets\Command\OpenTicket;
 use Tickets\Domain\Id;
 use Tickets\Domain\Ticket;
 use Tickets\Event\Event;
+use Tickets\Service\IdGenerator;
 
 final class HandleOpenTicket
 {
     /** @var Clock */
     private $clock;
 
-    public function __construct(Clock $clock)
+    /** @var IdGenerator */
+    private $idGenerator;
+
+    public function __construct(Clock $clock, IdGenerator $idGenerator)
     {
         $this->clock = $clock;
+        $this->idGenerator = $idGenerator;
     }
 
     /**
@@ -27,7 +32,7 @@ final class HandleOpenTicket
     public function handle(OpenTicket $openTicket): array
     {
         /** @psalm-var Id<Ticket> $ticketId */
-        $ticketId = Id::generate();
+        $ticketId = $this->idGenerator->generateId();
 
         return Ticket::open(
             $ticketId,

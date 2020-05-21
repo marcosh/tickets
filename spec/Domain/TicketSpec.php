@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TicketsSpec\Domain;
 
 use Lcobucci\Clock\FrozenClock;
+use Ramsey\Uuid\Uuid;
 use Tickets\Domain\Id;
 use Tickets\Domain\Message;
 use Tickets\Domain\Ticket;
@@ -13,10 +14,10 @@ use Tickets\Event\TicketOpened;
 
 describe('Ticket', function () {
     it('emits TicketOpen when opened', function () {
-        $ticketId = Id::generate();
+        $ticketId = Id::fromUuid(Uuid::uuid4());
         $message = Message::fromUserAndBody(
             User::withIdAndProfile(
-                Id::generate(),
+                Id::fromUuid(Uuid::uuid4()),
                 new User\Common()
             ),
             'a message'
