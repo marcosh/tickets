@@ -6,6 +6,7 @@ namespace Tickets\Domain;
 
 use Lcobucci\Clock\Clock;
 use Marcosh\LamPHPda\Maybe;
+use Tickets\Domain\Ticket\Status;
 use Tickets\Domain\User\Admin;
 use Tickets\Event\Event;
 use Tickets\Event\TicketOpened;
@@ -39,6 +40,9 @@ final class Ticket
      */
     private $messages;
 
+    /** @var Status */
+    private $status;
+
     /**
      * @param Id $ticketId
      * @psalm-param Id<Ticket> $ticketId
@@ -49,6 +53,7 @@ final class Ticket
      * @psalm-param Maybe<User<Admin>> $assignedTo
      * @param Message[] $messages
      * @psalm-param non-empty-list<Message> $messages
+     * @param Status $status
      * @psalm-pure
      */
     private function __construct(
@@ -57,7 +62,8 @@ final class Ticket
         \DateTimeImmutable $lastEditedAt,
         User $openedBy,
         Maybe $assignedTo,
-        array $messages
+        array $messages,
+        Status $status
     ) {
         $this->ticketId = $ticketId;
         $this->openedAt = $openedAt;
@@ -65,6 +71,7 @@ final class Ticket
         $this->openedBy = $openedBy;
         $this->assignedTo = $assignedTo;
         $this->messages = $messages;
+        $this->status = $status;
     }
 
     /**
@@ -106,7 +113,8 @@ final class Ticket
             Maybe::nothing(),
             [
                 $event->message()
-            ]
+            ],
+            Status::new()
         );
     }
 }
