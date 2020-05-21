@@ -11,9 +11,6 @@ use Tickets\Domain\User\Admin;
 use Tickets\Event\Event;
 use Tickets\Event\TicketOpened;
 
-/**
- * @psalm-immutable
- */
 final class Ticket
 {
     /**
@@ -86,7 +83,6 @@ final class Ticket
         Message $message,
         Clock $clock
     ): array {
-        /** @psalm-suppress ImpureMethodCall */
         $openedAt = $clock->now();
 
         return [

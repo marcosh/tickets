@@ -32,6 +32,7 @@ final class TicketOpened implements Event
      */
     public function __construct(Id $ticketId, Message $message, \DateTimeImmutable $openedAt)
     {
+        /** @psalm-suppress ImpurePropertyAssignment */
         $this->ticketId = $ticketId;
         $this->message = $message;
         $this->openedAt = $openedAt;
