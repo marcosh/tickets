@@ -28,7 +28,7 @@ final class OpenTicket
      * @return OpenTicket
      * @psalm-pure
      */
-    public function withMessage(Message $message): self
+    public static function withMessage(Message $message): self
     {
         return new self($message);
     }
