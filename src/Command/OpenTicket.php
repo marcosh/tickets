@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tickets\Command;
 
 use Tickets\Domain\Message;
-use Tickets\Domain\User;
 
 /**
  * @psalm-immutable
@@ -32,5 +31,14 @@ final class OpenTicket
     public function withMessage(Message $message): self
     {
         return new self($message);
+    }
+
+    /**
+     * @return Message
+     * @psalm-pure
+     */
+    public function message(): Message
+    {
+        return $this->message;
     }
 }
