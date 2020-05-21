@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace TicketsSpec\Domain;
 
 use Lcobucci\Clock\FrozenClock;
+use Marcosh\LamPHPda\Maybe;
 use Ramsey\Uuid\Uuid;
 use Tickets\Domain\Id;
 use Tickets\Domain\Message;
@@ -38,5 +39,31 @@ describe('Ticket', function () {
                 $now
             )
         ]);
+    });
+
+    it('rebuilds the aggregate correctly from a TicketOpen event', function () {
+        $ticketId = Id::fromUuid(Uuid::uuid4());
+        $user = User::withIdAndProfile(
+            Id::fromUuid(Uuid::uuid4()),
+            new User\Common()
+        );
+        $message = Message::fromUserAndBody($user, 'a message');
+        $now = date_create_immutable();
+
+        $event = new TicketOpened(
+            $ticketId,
+            $message,
+            $now
+        );
+
+        $ticket = Ticket::onTicketOpened($event);
+
+        expect($ticket->ticketId())->toBe($ticketId);
+        expect($ticket->openedAt())->toBe($now);
+        expect($ticket->lastEditedAt())->toBe($now);
+        expect($ticket->openedBy())->toBe($user);
+        expect($ticket->assignedTo())->toEqual(Maybe::nothing());
+        expect($ticket->messages())->toBe([$message]);
+        expect($ticket->status())->toEqual(Ticket\Status::new());
     });
 });
