@@ -9,31 +9,37 @@ namespace Tickets\Domain;
  */
 final class Message
 {
-    /** @var Id<User> */
-    private $userId;
+    /** @var User */
+    private $user;
 
     /** @var string */
     private $body;
 
     /**
-     * @param Id $userId
-     * @psalm-param Id<User> $userId
+     * @param User $user
      * @param string $body
      */
-    private function __construct(Id $userId, string $body)
+    private function __construct(User $user, string $body)
     {
-        $this->userId = $userId;
+        $this->user = $user;
         $this->body = $body;
     }
 
     /**
-     * @param Id $userId
-     * @psalm-param Id<User> $userId
+     * @param User $user
      * @param string $body
      * @return Message
      */
-    public static function fromUserIdAndBody(Id $userId, string $body): self
+    public static function fromUserAndBody(User $user, string $body): self
     {
-        return new self($userId, $body);
+        return new self($user, $body);
+    }
+
+    /**
+     * @return User
+     */
+    public function user(): User
+    {
+        return $this->user;
     }
 }
