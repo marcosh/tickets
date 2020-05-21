@@ -4,6 +4,7 @@
   - spec/(.*)\.php
   - psalm.xml
   - crc-config.json
+  - composer.json
   commands:
   - bin/phpcs
   - bin/psalm
