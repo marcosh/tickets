@@ -91,6 +91,11 @@ final class Ticket
         ];
     }
 
+    /**
+     * @param TicketOpened $event
+     * @return Ticket
+     * @psalm-pure
+     */
     public static function onTicketOpened(TicketOpened $event): self
     {
         return new self(

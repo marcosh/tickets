@@ -40,6 +40,7 @@ final class TicketOpened implements Event
     /**
      * @return Id
      * @psalm-return Id<Ticket>
+     * @psalm-pure
      */
     public function ticketId(): Id
     {
@@ -48,6 +49,7 @@ final class TicketOpened implements Event
 
     /**
      * @return Message
+     * @psalm-pure
      */
     public function message(): Message
     {
@@ -56,6 +58,7 @@ final class TicketOpened implements Event
 
     /**
      * @return User
+     * @psalm-pure
      */
     public function user(): User
     {
@@ -64,6 +67,7 @@ final class TicketOpened implements Event
 
     /**
      * @return \DateTimeImmutable
+     * @psalm-pure
      */
     public function openedAt(): \DateTimeImmutable
     {

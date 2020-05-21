@@ -16,21 +16,37 @@ final class Status
     /** @var int */
     private $status;
 
+    /**
+     * @param int $status
+     * @psalm-pure
+     */
     private function __construct(int $status)
     {
         $this->status = $status;
     }
 
+    /**
+     * @return Status
+     * @psalm-pure
+     */
     public static function new(): self
     {
         return new self(self::NEW);
     }
 
+    /**
+     * @return Status
+     * @psalm-pure
+     */
     public static function assigned(): self
     {
         return new self(self::ASSIGNED);
     }
 
+    /**
+     * @return Status
+     * @psalm-pure
+     */
     public static function closed(): self
     {
         return new self(self::CLOSED);

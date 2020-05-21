@@ -18,6 +18,7 @@ final class Message
     /**
      * @param User $user
      * @param string $body
+     * @psalm-pure
      */
     private function __construct(User $user, string $body)
     {
@@ -29,6 +30,7 @@ final class Message
      * @param User $user
      * @param string $body
      * @return Message
+     * @psalm-pure
      */
     public static function fromUserAndBody(User $user, string $body): self
     {
@@ -37,6 +39,7 @@ final class Message
 
     /**
      * @return User
+     * @psalm-pure
      */
     public function user(): User
     {
