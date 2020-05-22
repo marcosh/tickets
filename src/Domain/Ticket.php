@@ -32,9 +32,6 @@ final class Ticket
     /** @var User */
     private $openedBy;
 
-    /** @psalm-var Maybe<User<Admin>> */
-    private $assignedTo;
-
     /**
      * @var Message[]
      * @psalm-var non-empty-list<Message>
@@ -50,8 +47,6 @@ final class Ticket
      * @param \DateTimeImmutable $openedAt
      * @param \DateTimeImmutable $lastEditedAt
      * @param User $openedBy
-     * @param Maybe $assignedTo
-     * @psalm-param Maybe<User<Admin>> $assignedTo
      * @param Message[] $messages
      * @psalm-param non-empty-list<Message> $messages
      * @param Status $status
@@ -62,7 +57,6 @@ final class Ticket
         \DateTimeImmutable $openedAt,
         \DateTimeImmutable $lastEditedAt,
         User $openedBy,
-        Maybe $assignedTo,
         array $messages,
         Status $status
     ) {
@@ -70,7 +64,6 @@ final class Ticket
         $this->openedAt = $openedAt;
         $this->lastEditedAt = $lastEditedAt;
         $this->openedBy = $openedBy;
-        $this->assignedTo = $assignedTo;
         $this->messages = $messages;
         $this->status = $status;
     }
@@ -78,6 +71,7 @@ final class Ticket
     /**
      * @return Id
      * @psalm-return Id<Ticket>
+     * @psalm-pure
      */
     public function ticketId(): Id
     {
@@ -86,6 +80,7 @@ final class Ticket
 
     /**
      * @return \DateTimeImmutable
+     * @psalm-pure
      */
     public function openedAt(): \DateTimeImmutable
     {
@@ -94,6 +89,7 @@ final class Ticket
 
     /**
      * @return \DateTimeImmutable
+     * @psalm-pure
      */
     public function lastEditedAt(): \DateTimeImmutable
     {
@@ -102,6 +98,7 @@ final class Ticket
 
     /**
      * @return User
+     * @psalm-pure
      */
     public function openedBy(): User
     {
@@ -111,15 +108,17 @@ final class Ticket
     /**
      * @return Maybe
      * @psalm-return Maybe<User<Admin>>
+     * @psalm-pure
      */
     public function assignedTo(): Maybe
     {
-        return $this->assignedTo;
+        return $this->status->assignedTo();
     }
 
     /**
      * @return array
      * @psalm-return non-empty-list<Message>
+     * @psalm-pure
      */
     public function messages(): array
     {
@@ -128,6 +127,7 @@ final class Ticket
 
     /**
      * @return Status
+     * @psalm-pure
      */
     public function status(): Status
     {
@@ -150,7 +150,7 @@ final class Ticket
      */
     public function isAssignedTo(User $user): bool
     {
-        return $this->assignedTo->eval(
+        return $this->assignedTo()->eval(
             false,
             fn(User $assignedUser) => $assignedUser->id() == $user->id()
         );
@@ -201,7 +201,6 @@ final class Ticket
             $event->openedAt(),
             $event->openedAt(),
             $event->user(),
-            Maybe::nothing(),
             [
                 $event->message()
             ],
@@ -248,11 +247,11 @@ final class Ticket
      */
     private function newAssignee(User $user): Maybe
     {
-        if ($this->assignedTo->isNothing() && $user->isAdmin()) {
+        if ($user->isAdmin() && $this->assignedTo()->isNothing()) {
             return Maybe::just($user);
         }
 
-        return $this->assignedTo;
+        return $this->assignedTo();
     }
 
     /**
@@ -269,9 +268,8 @@ final class Ticket
             $this->openedAt,
             $event->answeredAt(),
             $this->openedBy,
-            $newAssignee,
             array_merge($this->messages, [$event->message()]),
-            $event->user()->isAdmin() ? $this->status->adminAnswered() : $this->status
+            $event->user()->isAdmin() ? $this->status->adminAnswered($event->user()) : $this->status
         );
     }
 }

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tickets\Domain\Ticket;
 
+use Marcosh\LamPHPda\Maybe;
+use Tickets\Domain\User;
+use Tickets\Domain\User\Admin;
+
 /**
  * @psalm-immutable
  */
@@ -17,10 +21,18 @@ final class Status
     private $status;
 
     /**
+     * The assignee is present only for the ASSIGNED case
+     *
+     * @var ?User
+     * @psalm-var ?User<Admin>
+     */
+    private $assignee;
+
+    /**
      * @param int $status
      * @psalm-pure
      */
-    private function __construct(int $status)
+    private function __construct(int $status, ?User $assignee = null)
     {
         $this->status = $status;
     }
@@ -35,12 +47,14 @@ final class Status
     }
 
     /**
+     * @param User $assignee
+     * @psalm-param User $assignee
      * @return Status
      * @psalm-pure
      */
-    public static function assigned(): self
+    public static function assigned(User $assignee): self
     {
-        return new self(self::ASSIGNED);
+        return new self(self::ASSIGNED, $assignee);
     }
 
     /**
@@ -62,13 +76,28 @@ final class Status
     }
 
     /**
+     * @return Maybe
+     * @psalm-return Maybe<User<Admin>>
+     */
+    public function assignedTo(): Maybe
+    {
+        if (null === $this->assignee) {
+            return Maybe::nothing();
+        }
+
+        return Maybe::just($this->assignee);
+    }
+
+    /**
+     * @param User $user
+     * @psalm-param User<Admin> $user
      * @return Status
      * @psalm-pure
      */
-    public function adminAnswered(): self
+    public function adminAnswered(User $user): self
     {
         if ($this->isNew()) {
-            return self::assigned();
+            return self::assigned($user);
         }
 
         return $this;
