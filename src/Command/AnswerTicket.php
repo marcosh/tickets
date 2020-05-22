@@ -47,6 +47,7 @@ final class AnswerTicket
     /**
      * @return Id
      * @psalm-return Id<Ticket>
+     * @psalm-pure
      */
     public function ticketId(): Id
     {

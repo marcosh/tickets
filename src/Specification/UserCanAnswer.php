@@ -9,6 +9,9 @@ use Tickets\Domain\Ticket;
 use Tickets\Domain\User;
 use Tickets\Error\AnswerError;
 
+/**
+ * @psalm-immutable
+ */
 final class UserCanAnswer
 {
     /**
@@ -16,6 +19,7 @@ final class UserCanAnswer
      * @param User $user
      * @return Maybe
      * @psalm-return Maybe<AnswerError>
+     * @psalm-pure
      */
     public function isSatisfiedBy(Ticket $ticket, User $user): Maybe
     {
