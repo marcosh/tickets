@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace TicketsSpec\Commandhandler;
+namespace TicketsSpec\CommandHandler;
 
 use Lcobucci\Clock\FrozenClock;
 use Ramsey\Uuid\Uuid;
