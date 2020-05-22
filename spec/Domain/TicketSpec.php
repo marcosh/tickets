@@ -6,7 +6,6 @@ namespace TicketsSpec\Domain;
 
 use Lcobucci\Clock\FrozenClock;
 use Marcosh\LamPHPda\Either;
-use Marcosh\LamPHPda\Maybe;
 use Ramsey\Uuid\Uuid;
 use Tickets\Domain\Id;
 use Tickets\Domain\Message;
@@ -65,7 +64,6 @@ describe('Ticket', function () {
         expect($ticket->openedAt())->toBe($now);
         expect($ticket->lastEditedAt())->toBe($now);
         expect($ticket->openedBy())->toBe($user);
-        expect($ticket->assignedTo())->toEqual(Maybe::nothing());
         expect($ticket->messages())->toBe([$message]);
         expect($ticket->status())->toEqual(Ticket\Status::new());
     });
@@ -218,5 +216,81 @@ describe('Ticket', function () {
                 expect($error)->toEqual(Either::left(AnswerError::adminCanAnswerOnlyNewOrAssignedTickets()));
             }
         );
+    });
+
+    it('updates the aggregate correctly when an answer arrives from an admin', function () {
+        $ticketId = Id::fromUuid(Uuid::uuid4());
+        $user = User::withIdAndProfile(
+            Id::fromUuid(Uuid::uuid4()),
+            new User\Common()
+        );
+        $message = Message::fromUserAndBody($user, 'a message');
+        $then = date_create_immutable();
+
+        $ticket = Ticket::onTicketOpened(
+            new TicketOpened(
+                $ticketId,
+                $message,
+                $then
+            )
+        );
+
+        $admin = User::withIdAndProfile(
+            Id::fromUuid(Uuid::uuid4()),
+            new User\Admin()
+        );
+        $answerMessage = Message::fromUserAndBody($admin, 'an answer');
+
+        $now = date_create_immutable();
+        $ticket = $ticket->onNewAnswerArrived(
+            new NewAnswerArrived(
+                $ticketId,
+                $answerMessage,
+                $now
+            )
+        );
+
+        expect($ticket->ticketId())->toBe($ticketId);
+        expect($ticket->openedAt())->toBe($then);
+        expect($ticket->lastEditedAt())->toBe($now);
+        expect($ticket->openedBy())->toBe($user);
+        expect($ticket->messages())->toBe([$message, $answerMessage]);
+        expect($ticket->status())->toEqual(Ticket\Status::assigned($admin));
+    });
+
+    it('updates the aggregate correctly when an answer arrives from a common user', function () {
+        $ticketId = Id::fromUuid(Uuid::uuid4());
+        $user = User::withIdAndProfile(
+            Id::fromUuid(Uuid::uuid4()),
+            new User\Common()
+        );
+        $message = Message::fromUserAndBody($user, 'a message');
+        $then = date_create_immutable();
+
+        $ticket = Ticket::onTicketOpened(
+            new TicketOpened(
+                $ticketId,
+                $message,
+                $then
+            )
+        );
+
+        $answerMessage = Message::fromUserAndBody($user, 'an answer');
+
+        $now = date_create_immutable();
+        $ticket = $ticket->onNewAnswerArrived(
+            new NewAnswerArrived(
+                $ticketId,
+                $answerMessage,
+                $now
+            )
+        );
+
+        expect($ticket->ticketId())->toBe($ticketId);
+        expect($ticket->openedAt())->toBe($then);
+        expect($ticket->lastEditedAt())->toBe($now);
+        expect($ticket->openedBy())->toBe($user);
+        expect($ticket->messages())->toBe([$message, $answerMessage]);
+        expect($ticket->status())->toEqual(Ticket\Status::new());
     });
 });
