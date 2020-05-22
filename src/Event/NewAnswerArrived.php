@@ -21,21 +21,21 @@ final class NewAnswerArrived implements Event
     private $message;
 
     /** @var \DateTimeImmutable */
-    private $openedAt;
+    private $answeredAt;
 
     /**
      * @param Id $ticketId
      * @psalm-param Id<Ticket> $ticketId
      * @param Message $message
-     * @param \DateTimeImmutable $openedAt
+     * @param \DateTimeImmutable $answeredAt
      * @psalm-pure
      */
-    public function __construct(Id $ticketId, Message $message, \DateTimeImmutable $openedAt)
+    public function __construct(Id $ticketId, Message $message, \DateTimeImmutable $answeredAt)
     {
         /** @psalm-suppress ImpurePropertyAssignment */
         $this->ticketId = $ticketId;
         $this->message = $message;
-        $this->openedAt = $openedAt;
+        $this->answeredAt = $answeredAt;
     }
 
     /**
@@ -70,8 +70,8 @@ final class NewAnswerArrived implements Event
      * @return \DateTimeImmutable
      * @psalm-pure
      */
-    public function openedAt(): \DateTimeImmutable
+    public function answeredAt(): \DateTimeImmutable
     {
-        return $this->openedAt;
+        return $this->answeredAt;
     }
 }
