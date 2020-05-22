@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tickets\Domain;
 
+use Tickets\Domain\User\Admin;
 use Tickets\Domain\User\UserProfile;
 
 /**
@@ -51,5 +52,23 @@ final class User
     public static function withIdAndProfile(Id $userId, UserProfile $userProfile): self
     {
         return new self($userId, $userProfile);
+    }
+
+    /**
+     * @return bool
+     * @psalm-pure
+     */
+    public function isAdmin(): bool
+    {
+        return $this->userProfile instanceof Admin;
+    }
+
+    /**
+     * @return Id
+     * @psalm-return Id<User>
+     */
+    public function id(): Id
+    {
+        return $this->userId;
     }
 }

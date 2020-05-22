@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Tickets\Domain;
 
 use Lcobucci\Clock\Clock;
+use Marcosh\LamPHPda\Either;
 use Marcosh\LamPHPda\Maybe;
 use Tickets\Domain\Ticket\Status;
 use Tickets\Domain\User\Admin;
+use Tickets\Error\AnswerError;
 use Tickets\Event\Event;
+use Tickets\Event\NewAnswerArrived;
 use Tickets\Event\TicketOpened;
+use Tickets\Specification\UserCanAnswer;
 
 final class Ticket
 {
@@ -131,6 +135,38 @@ final class Ticket
     }
 
     /**
+     * @return bool
+     * @psalm-pure
+     */
+    public function isNew(): bool
+    {
+        return $this->status == Status::new();
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     * @psalm-pure
+     */
+    public function isAssignedTo(User $user): bool
+    {
+        return $this->assignedTo->eval(
+            false,
+            fn(User $assignedUser) => $assignedUser->id() == $user->id()
+        );
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     * @psalm-pure
+     */
+    public function wasCreatedBy(User $user): bool
+    {
+        return $this->openedBy->id() == $user->id();
+    }
+
+    /**
      * @param Id $ticketId
      * @psalm-param Id<Ticket> $ticketId
      * @param Message $message
@@ -170,6 +206,37 @@ final class Ticket
                 $event->message()
             ],
             Status::new()
+        );
+    }
+
+    /**
+     * @param Message $message
+     * @param Clock $clock
+     * @return Either
+     * @psalm-return Either<AnswerError, Event[]>
+     */
+    public function answer(
+        Message $message,
+        Clock $clock
+    ): Either {
+        $maybeError = (new UserCanAnswer())->isSatisfiedBy($this, $message->user());
+
+        $event = new NewAnswerArrived(
+            $this->ticketId,
+            $message,
+            $clock->now()
+        );
+
+        /** @var Either<AnswerError, Event[]> $successCase */
+        $successCase = Either::right([$event]);
+
+        return $maybeError->eval(
+            $successCase,
+            /**
+             * @psalm-param AnswerError $error
+             * @psalm-return Either<AnswerError, Event[]>
+             */
+            fn($error) => Either::left($error)
         );
     }
 }
