@@ -239,4 +239,39 @@ final class Ticket
             fn($error) => Either::left($error)
         );
     }
+
+    /**
+     * @param User $user
+     * @return Maybe
+     * @psalm-return Maybe<User<Admin>>
+     * @psalm-pure
+     */
+    private function newAssignee(User $user): Maybe
+    {
+        if ($this->assignedTo->isNothing() && $user->isAdmin()) {
+            return Maybe::just($user);
+        }
+
+        return $this->assignedTo;
+    }
+
+    /**
+     * @param NewAnswerArrived $event
+     * @return Ticket
+     * @psalm-pure
+     */
+    public function onNewAnswerArrived(NewAnswerArrived $event): self
+    {
+        $newAssignee = $this->newAssignee($event->user());
+
+        return new self(
+            $this->ticketId,
+            $this->openedAt,
+            $event->answeredAt(),
+            $this->openedBy,
+            $newAssignee,
+            array_merge($this->messages, [$event->message()]),
+            $event->user()->isAdmin() ? $this->status->adminAnswered() : $this->status
+        );
+    }
 }

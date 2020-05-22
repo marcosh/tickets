@@ -51,4 +51,26 @@ final class Status
     {
         return new self(self::CLOSED);
     }
+
+    /**
+     * @return bool
+     * @psalm-pure
+     */
+    public function isNew(): bool
+    {
+        return $this->status === self::NEW;
+    }
+
+    /**
+     * @return Status
+     * @psalm-pure
+     */
+    public function adminAnswered(): self
+    {
+        if ($this->isNew()) {
+            return self::assigned();
+        }
+
+        return $this;
+    }
 }
