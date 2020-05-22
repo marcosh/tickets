@@ -71,4 +71,12 @@ final class User
     {
         return $this->userId;
     }
+
+    /**
+     * @return bool
+     */
+    public function wantsSMS(): bool
+    {
+        return true;
+    }
 }
