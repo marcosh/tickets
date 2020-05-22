@@ -19,6 +19,8 @@ final class UserCanAnswer
      */
     public function isSatisfiedBy(Ticket $ticket, User $user): Maybe
     {
+        // TODO: can a user answer a ticket if it is already closed?
+
         // if an admin created a ticket, he can answer it even if it is not new or assigned to him
         if ($ticket->wasCreatedBy($user)) {
             return Maybe::nothing();
