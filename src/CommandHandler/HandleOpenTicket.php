@@ -19,6 +19,11 @@ final class HandleOpenTicket
     /** @var IdGenerator */
     private $idGenerator;
 
+    /**
+     * @param Clock $clock
+     * @param IdGenerator $idGenerator
+     * @psalm-pure
+     */
     public function __construct(Clock $clock, IdGenerator $idGenerator)
     {
         $this->clock = $clock;

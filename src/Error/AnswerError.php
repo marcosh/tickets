@@ -11,6 +11,7 @@ final class AnswerError
 {
     private const ADMIN_CAN_ANSWER_ONLY_NEW_OR_ASSIGNED_TICKET = 0;
     private const USER_CAN_ANSWER_ONLY_TO_TICKETS_HE_CREATED = 1;
+    private const TICKET_NOT_FOUND = 2;
 
     /** @var int */
     private $option;
@@ -40,5 +41,10 @@ final class AnswerError
     public static function userCanAnswerOnlyToTicketsHeCreated(): self
     {
         return new self(self::USER_CAN_ANSWER_ONLY_TO_TICKETS_HE_CREATED);
+    }
+
+    public static function ticketNotFound(): self
+    {
+        return new self(self::TICKET_NOT_FOUND);
     }
 }

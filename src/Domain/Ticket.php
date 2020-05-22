@@ -227,7 +227,7 @@ final class Ticket
             $clock->now()
         );
 
-        /** @var Either<AnswerError, Event[]> $successCase */
+        /** @psalm-var Either<AnswerError, Event[]> $successCase */
         $successCase = Either::right([$event]);
 
         return $maybeError->eval(
