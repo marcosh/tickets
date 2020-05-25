@@ -35,6 +35,7 @@ final class Status
     private function __construct(int $status, ?User $assignee = null)
     {
         $this->status = $status;
+        $this->assignee = $assignee;
     }
 
     /**
