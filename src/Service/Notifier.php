@@ -11,6 +11,7 @@ interface Notifier
 {
     /**
      * @param User[] $users
+     * @param Ticket $ticket
      */
     public function notifyUsersOfTicket(array $users, Ticket $ticket): void;
 }

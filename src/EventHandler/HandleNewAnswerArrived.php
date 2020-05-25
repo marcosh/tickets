@@ -18,12 +18,20 @@ final class HandleNewAnswerArrived
     /** @var Notifier */
     private $notifier;
 
+    /**
+     * @param TicketsRepository $ticketsRepository
+     * @param Notifier $notifier
+     * @psalm-pure
+     */
     public function __construct(TicketsRepository $ticketsRepository, Notifier $notifier)
     {
         $this->ticketsRepository = $ticketsRepository;
         $this->notifier = $notifier;
     }
 
+    /**
+     * @param NewAnswerArrived $event
+     */
     public function handle(NewAnswerArrived $event): void
     {
         $maybeTicket = $this->ticketsRepository->loadTicket($event->ticketId());

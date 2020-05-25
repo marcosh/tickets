@@ -30,6 +30,8 @@ final class Status
 
     /**
      * @param int $status
+     * @param User|null $assignee
+     * @param User<Admin>|null $assignee
      * @psalm-pure
      */
     private function __construct(int $status, ?User $assignee = null)
@@ -49,7 +51,7 @@ final class Status
 
     /**
      * @param User $assignee
-     * @psalm-param User $assignee
+     * @psalm-param User<Admin> $assignee
      * @return Status
      * @psalm-pure
      */
@@ -79,6 +81,7 @@ final class Status
     /**
      * @return Maybe
      * @psalm-return Maybe<User<Admin>>
+     * @psalm-pure
      */
     public function assignedTo(): Maybe
     {

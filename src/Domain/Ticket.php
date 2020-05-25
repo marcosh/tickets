@@ -140,7 +140,7 @@ final class Ticket
      */
     public function isNew(): bool
     {
-        return $this->status == Status::new();
+        return $this->status->isNew();
     }
 
     /**
@@ -237,21 +237,6 @@ final class Ticket
              */
             fn($error) => Either::left($error)
         );
-    }
-
-    /**
-     * @param User $user
-     * @return Maybe
-     * @psalm-return Maybe<User<Admin>>
-     * @psalm-pure
-     */
-    private function newAssignee(User $user): Maybe
-    {
-        if ($user->isAdmin() && $this->assignedTo()->isNothing()) {
-            return Maybe::just($user);
-        }
-
-        return $this->assignedTo();
     }
 
     /**

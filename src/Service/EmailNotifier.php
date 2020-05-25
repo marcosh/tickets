@@ -14,6 +14,7 @@ final class EmailNotifier implements Notifier
 
     /**
      * @param Mailer $mailer
+     * @psalm-pure
      */
     public function __construct(Mailer $mailer)
     {

@@ -43,6 +43,10 @@ final class AnswerError
         return new self(self::USER_CAN_ANSWER_ONLY_TO_TICKETS_HE_CREATED);
     }
 
+    /**
+     * @return AnswerError
+     * @psalm-pure
+     */
     public static function ticketNotFound(): self
     {
         return new self(self::TICKET_NOT_FOUND);

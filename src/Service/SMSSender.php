@@ -8,5 +8,9 @@ use Tickets\Domain\User;
 
 interface SMSSender
 {
+    /**
+     * @param User $user
+     * @param string $body
+     */
     public function sendSMS(User $user, string $body): void;
 }

@@ -26,6 +26,11 @@ final class InMemoryNotifier implements Notifier
         }
     }
 
+    /**
+     * @return array
+     * @psalm-return array{user: User, ticket: Ticket}[]
+     * @psalm-pure
+     */
     public function notifications(): array
     {
         return $this->notifications;

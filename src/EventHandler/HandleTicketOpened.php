@@ -26,6 +26,12 @@ final class HandleTicketOpened
      */
     private $notifier;
 
+    /**
+     * @param UsersRepository $usersRepository
+     * @param TicketsRepository $ticketsRepository
+     * @param Notifier $notifier
+     * @psalm-pure
+     */
     public function __construct(
         UsersRepository $usersRepository,
         TicketsRepository $ticketsRepository,
@@ -36,6 +42,9 @@ final class HandleTicketOpened
         $this->notifier = $notifier;
     }
 
+    /**
+     * @param TicketOpened $event
+     */
     public function handle(TicketOpened $event): void
     {
         $allAdmins = $this->usersRepository->allAdmins();

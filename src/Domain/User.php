@@ -66,6 +66,7 @@ final class User
     /**
      * @return Id
      * @psalm-return Id<User>
+     * @psalm-pure
      */
     public function id(): Id
     {
@@ -74,6 +75,7 @@ final class User
 
     /**
      * @return bool
+     * @psalm-pure
      */
     public function wantsSMS(): bool
     {
