@@ -26,7 +26,7 @@ final class HandleTicketOpened
      */
     private $notifier;
 
-    private function __construct(
+    public function __construct(
         UsersRepository $usersRepository,
         TicketsRepository $ticketsRepository,
         Notifier $notifier
@@ -44,7 +44,7 @@ final class HandleTicketOpened
 
         $maybeTicket->eval(
             null,
-            (fn($ticket) => $this->notifier->notifyUsersOfTicket($allAdmins, $$ticket))
+            (fn($ticket) => $this->notifier->notifyUsersOfTicket($allAdmins, $ticket))
         );
     }
 }
