@@ -8,6 +8,7 @@
       "email": "pasafama@gmail.com"
     }
   ],
+  "license": "Hippocratic 2.1",
   "require": {
     "php": "^7.4",
     "roave/you-are-using-it-wrong": "^1.4",
