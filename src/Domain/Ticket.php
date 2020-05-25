@@ -261,8 +261,6 @@ final class Ticket
      */
     public function onNewAnswerArrived(NewAnswerArrived $event): self
     {
-        $newAssignee = $this->newAssignee($event->user());
-
         return new self(
             $this->ticketId,
             $this->openedAt,
