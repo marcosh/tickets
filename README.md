@@ -1,6 +1,6 @@
-# madisoft-tickets
+# tickets
 
-Ticketing system domain developed for a Madisoft interview.
+Ticketing system domain developed for a job interview.
 
 ## tools
 
