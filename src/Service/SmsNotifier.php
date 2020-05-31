@@ -7,7 +7,7 @@ namespace Tickets\Service;
 use Tickets\Domain\Ticket;
 use Tickets\Domain\User;
 
-final class SmsNotifier
+final class SmsNotifier implements Notifier
 {
     /** @var SMSSender */
     private $sender;
