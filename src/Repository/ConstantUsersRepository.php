@@ -31,11 +31,6 @@ final class ConstantUsersRepository implements UsersRepository
      */
     public function allAdmins(): array
     {
-        return array_filter(
-            $this->users,
-            function (User $user) {
-                return $user->isAdmin();
-            }
-        );
+        return array_filter($this->users, fn(User $user) => $user->isAdmin());
     }
 }
